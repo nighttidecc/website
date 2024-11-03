@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nighttide.cc</title>
+	<link rel="icon" href="nighttidecc.png" type="image/png"> <!-- Favicon Eklendi -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* Genel Stil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom, #87cefa, #1e90ff);
+            color: #f0f0f0;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        a {
+            color: #00bfff;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #009acd;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10%;
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .navbar img {
+            height: 50px;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .navbar img:hover {
+            transform: scale(1.1);
+        }
+        .navbar a {
+            margin: 0 15px;
+            font-weight: 500;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        /* Parallax Efekti */
+        .parallax {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            background: url('https://source.unsplash.com/1600x900/?clouds,sky') no-repeat center center/cover;
+            background-size: cover;
+        }
+        .parallax-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            color: white;
+        }
+        .parallax h1 {
+            font-size: 3em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            transition: filter 0.3s;
+        }
+        .parallax p {
+            font-size: 1.4em;
+            max-width: 700px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Özellikler Bölümü */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 80px 10%;
+            background-color: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .features.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+        }
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
+            transition: filter 0.3s, text-shadow 0.3s;
+        }
+        .feature-card p {
+            font-size: 1em;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+            transition: filter 0.3s;
+        }
+        .feature-card:hover h3,
+        .feature-card:hover p {
+            filter: brightness(1.2);
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Hakkında Bölümü */
+        .about {
+            position: relative;
+            padding: 60px 10%;
+            text-align: center;
+            background-color: rgba(30, 30, 30, 0.9);
+            border-top: 2px solid #444;
+            border-bottom: 2px solid #444;
+            border-radius: 15px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .about.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .about h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.6);
+        }
+        .about p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+            transition: filter 0.3s;
+        }
+        .about h2:hover,
+        .about p:hover {
+            filter: brightness(1.3);
+        }
+
+        /* UI Köşe Efekti */
+        .about::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            z-index: -1;
+            filter: blur(30px);
+        }
+
+        /* Özellikler Başlığı Stili */
+        .features h2 {
+            grid-column: span 2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.6);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Buton */
+        .cta-button {
+            margin-top: 30px;
+            padding: 12px 30px;
+            font-size: 1em;
+            background-color: #00bfff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: #009acd;
+        }
+
+        /* Sosyal Medya Bölümü */
+        .socials {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .socials img {
+            width: 40px;
+            margin: 0 10px;
+            transition: transform 0.3s;
+        }
+        .socials img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: rgba(30, 30, 30, 0.9);
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-top: 2px solid #444;
+        }
+        .footer p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <img src="nighttide.png" alt="Logo">
+    <div>
+        <a href="#features">Features</a>
+        <a href="#about">About us</a>
+        <a href="https://discord.gg/nENczjYuXU" target="_blank">Discord</a>
+        <a href="https://www.instagram.com/nighttide.cc/" target="_blank">Instagram</a>
+    </div>
+</nav>
+
+<!-- Parallax -->
+<div class="parallax">
+    <div class="parallax-inner">
+        <h1>nighttide.cc</h1>
+        <p>Discover cheats that take the gaming experience to the next level!</p
+		<p>Bored fair? Play unfair.,, ~nighttide.cc</p>
+    </div>
+</div>
+
+<!-- Özellikler -->
+<div class="features" id="features">
+    <h2>Features</h2>
+    <div class="feature-card">
+        <h3>Easy to Use</h3>
+        <p>Get started quickly with many user-friendly interfaces and tutorials!</p>
+    </div>
+    <div class="feature-card">
+        <h3>Security</h3>
+        <p>Stay protected with advanced encryption and security measures.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Fast Updates</h3>
+        <p>Always stay on the cutting edge with constantly updated cheats.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Community Support</h3>
+        <p>Always get help from our active community of users.</p>
+    </div>
+</div>
+
+<!-- Hakkında -->
+<div class="about" id="about">
+    <h2>About us</h2>
+    <p>nighttide.cc is a cheat system designed to enhance users' gaming experience. It allows you to access the best cheats in a safe, fast and easy way.</p>
+</div>
+
+<!-- İletişim Butonu -->
+<div style="text-align: center;">
+    <button class="cta-button" onclick="alert('İletişim için bizimle iletişime geçin!')">Contact us</button>
+</div>
+
+<!-- Sosyal Medya -->
+<div class="socials">
+    <a href="https://discord.gg/nENczjYuXU" target="_blank"><img src="discord.png" alt="Discord"></a>
+    <a href="https://www.instagram.com/nighttide.cc/" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2024 nighttide.cc. All Rights Reserved.</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const featuresSection = document.querySelector('.features');
+        const aboutSection = document.querySelector('.about');
+        setTimeout(() => {
+            featuresSection.classList.add('visible');
+            aboutSection.classList.add('visible');
+        }, 500);
+    });
+</script>
+
+</body>
+</html>
